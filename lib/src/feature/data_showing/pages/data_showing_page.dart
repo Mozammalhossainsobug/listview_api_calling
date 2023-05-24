@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:listview_api_calling/data_showing/model/json_data_model.dart';
-import 'package:listview_api_calling/data_showing/widgets/list_tile_widget.dart';
+import 'package:listview_api_calling/src/feature/data_showing/model/json_data_model.dart';
+import 'package:listview_api_calling/src/feature/data_showing/widgets/list_tile_widget.dart';
 
 class MyListView extends StatefulWidget {
   @override
