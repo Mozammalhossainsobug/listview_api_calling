@@ -21,48 +21,49 @@ class _MyListViewState extends State<MyListView> {
   }
 
   Future<void> fetchItems() async {
-  try {
-    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
+    try {
+      final response = await http
+          .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
 
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      
-      setState(() {
-        items = (jsonData as List)
-            .map((itemJson) => Item.fromJson(itemJson))
-            .toList();
-        isLoading = false; // Set isLoading to false
-      });
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+
+        setState(() {
+          items = (jsonData as List)
+              .map((itemJson) => Item.fromJson(itemJson))
+              .toList();
+          isLoading = false; // Set isLoading to false
+        });
+
+        // Fluttertoast.showToast(
+        //   msg: 'Successfully retrieved data',
+        //   toastLength: Toast.LENGTH_SHORT,
+        //   gravity: ToastGravity.CENTER,
+        // );
+      } else {
+        throw Exception(
+            'Failed to load data. HTTP status: ${response.statusCode}');
+      }
+    } catch (e) {
+      isLoading = false;
+      setState(() {});
 
       Fluttertoast.showToast(
-        msg: 'Successfully retrieved data',
-        toastLength: Toast.LENGTH_SHORT,
+        msg: 'Error: $e',
+        toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
       );
-    } else {
-      throw Exception('Failed to load data. HTTP status: ${response.statusCode}');
     }
-  } catch (e) {
-    isLoading = false;
-    setState(() {});
-    
-    Fluttertoast.showToast(
-      msg: 'Error: $e',
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Json Data'),
+        title: const Text('Json Data'),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
@@ -74,10 +75,11 @@ class _MyListViewState extends State<MyListView> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: listTileWidget(
-                        item.id.toString(),
-                        (index + 1).toString(),
-                        item.title,
-                        item.body),
+                      item.id.toString(),
+                      (index + 1).toString(),
+                      item.title,
+                      item.body,
+                    ),
                   ),
                 );
               },
